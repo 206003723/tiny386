@@ -19,12 +19,12 @@ static const char *TAG = "lcd";
 #define TEST_LCD_SPI_V_RES              (240)
 #define TEST_LCD_SPI_HOST               (SPI2_HOST)
 #define TEST_PIN_NUM_SPI_CS             (GPIO_NUM_5)
-#define TEST_PIN_NUM_SPI_PCLK           (GPIO_NUM_18)
-#define TEST_PIN_NUM_SPI_MOSI           (GPIO_NUM_19)
-#define TEST_PIN_NUM_SPI_MISO           (GPIO_NUM_21)
-#define TEST_PIN_NUM_SPI_RST            (GPIO_NUM_4)
-#define TEST_PIN_NUM_SPI_DC             (GPIO_NUM_2)
-#define TEST_PIN_NUM_SPI_BL             (GPIO_NUM_15)
+#define TEST_PIN_NUM_SPI_PCLK           (GPIO_NUM_6)
+#define TEST_PIN_NUM_SPI_MOSI           (GPIO_NUM_7)
+#define TEST_PIN_NUM_SPI_MISO           (GPIO_NUM_8)
+#define TEST_PIN_NUM_SPI_RST            (GPIO_NUM_9)
+#define TEST_PIN_NUM_SPI_DC             (GPIO_NUM_18)
+#define TEST_PIN_NUM_SPI_BL             (GPIO_NUM_19)
 
 static SemaphoreHandle_t refresh_finish = NULL;
 
