@@ -7,9 +7,9 @@
 #define FULL_UPDATE
 #define SWAPXY
 #define SWAP_BYTEORDER_BPP16
-#define USE_LCD_AXS15231B
-#define LCD_WIDTH 480
-#define LCD_HEIGHT 320
+#define USE_LCD_ILI9341
+#define LCD_WIDTH 320
+#define LCD_HEIGHT 240
 
 #define SD_CLK 12
 #define SD_CMD 11
