@@ -12,65 +12,71 @@ static const char *TAG = "lcd";
 #define TEST_LCD_SPI_H_RES              (320)
 #define TEST_LCD_SPI_V_RES              (240)
 #define TEST_LCD_SPI_HOST               (SPI2_HOST)
-#define TEST_PIN_NUM_SPI_CS             (GPIO_NUM_5)
-#define TEST_PIN_NUM_SPI_PCLK           (GPIO_NUM_6)
-#define TEST_PIN_NUM_SPI_MOSI           (GPIO_NUM_7)
-#define TEST_PIN_NUM_SPI_MISO           (GPIO_NUM_8)
-#define TEST_PIN_NUM_SPI_RST            (GPIO_NUM_9)
-#define TEST_PIN_NUM_SPI_DC             (GPIO_NUM_18)
+#define TEST_PIN_NUM_SPI_CS             (5)
+#define TEST_PIN_NUM_SPI_PCLK           (6)
+#define TEST_PIN_NUM_SPI_MOSI           (7)
+#define TEST_PIN_NUM_SPI_MISO           (8)
+#define TEST_PIN_NUM_SPI_RST            (9)
+#define TEST_PIN_NUM_SPI_DC             (18)
 // BLK引脚直连3.3V，无需在代码中控制
+
+// 定义初始化命令结构体
+typedef struct {
+    uint8_t cmd;
+    uint8_t data[16];
+    uint8_t data_bytes;
+    uint8_t delay_ms;
+} lcd_init_cmd_t;
 
 // 自定义初始化命令序列 - 固定为横屏90度方向
 static const lcd_init_cmd_t lcd_init_cmds[] = {
     // 软件复位
-    {0x01, (uint8_t []){0x00}, 0, 120},
+    {0x01, {0x00}, 0, 120},
     // 电源控制A
-    {0xCB, (uint8_t []){0x39, 0x2C, 0x00, 0x34, 0x02}, 5, 0},
+    {0xCB, {0x39, 0x2C, 0x00, 0x34, 0x02}, 5, 0},
     // 电源控制B
-    {0xCF, (uint8_t []){0x00, 0xC1, 0x30}, 3, 0},
+    {0xCF, {0x00, 0xC1, 0x30}, 3, 0},
     // 驱动时序控制A
-    {0xE8, (uint8_t []){0x85, 0x00, 0x78}, 3, 0},
+    {0xE8, {0x85, 0x00, 0x78}, 3, 0},
     // 驱动时序控制B
-    {0xEA, (uint8_t []){0x00, 0x00}, 2, 0},
+    {0xEA, {0x00, 0x00}, 2, 0},
     // 电源控制1
-    {0xED, (uint8_t []){0x64, 0x03, 0x12, 0x81}, 4, 0},
+    {0xED, {0x64, 0x03, 0x12, 0x81}, 4, 0},
     // 电源控制2
-    {0xF7, (uint8_t []){0x20}, 1, 0},
+    {0xF7, {0x20}, 1, 0},
     // 泵比率控制
-    {0xC0, (uint8_t []){0x23}, 1, 0},
+    {0xC0, {0x23}, 1, 0},
     // 电源控制VRH
-    {0xC1, (uint8_t []){0x10}, 1, 0},
+    {0xC1, {0x10}, 1, 0},
     // VCM控制
-    {0xC5, (uint8_t []){0x3E, 0x28}, 2, 0},
+    {0xC5, {0x3E, 0x28}, 2, 0},
     // VCM控制2
-    {0xC7, (uint8_t []){0x86}, 1, 0},
+    {0xC7, {0x86}, 1, 0},
     // 内存访问控制 - 横屏90度: MY=1, MX=0, MV=1, ML=0, RGB=0, MH=0
-    {0x36, (uint8_t []){0x68}, 1, 0},  // 0x68 = 0110 1000
+    {0x36, {0x68}, 1, 0},  // 0x68 = 0110 1000
     // 像素格式设置 - 16位像素
-    {0x3A, (uint8_t []){0x55}, 1, 0},
+    {0x3A, {0x55}, 1, 0},
     // 帧率控制
-    {0xB1, (uint8_t []){0x00, 0x18}, 2, 0},
+    {0xB1, {0x00, 0x18}, 2, 0},
     // 显示功能控制
-    {0xB6, (uint8_t []){0x08, 0x82, 0x27}, 3, 0},
+    {0xB6, {0x08, 0x82, 0x27}, 3, 0},
     // 设置列地址 - 0-239
-    {0x2A, (uint8_t []){0x00, 0x00, 0x00, 0xEF}, 4, 0},
+    {0x2A, {0x00, 0x00, 0x00, 0xEF}, 4, 0},
     // 设置行地址 - 0-319
-    {0x2B, (uint8_t []){0x00, 0x00, 0x01, 0x3F}, 4, 0},
+    {0x2B, {0x00, 0x00, 0x01, 0x3F}, 4, 0},
     // 3Gamma功能禁用
-    {0xF2, (uint8_t []){0x00}, 1, 0},
+    {0xF2, {0x00}, 1, 0},
     // Gamma曲线选择
-    {0x26, (uint8_t []){0x01}, 1, 0},
+    {0x26, {0x01}, 1, 0},
     // 正极性Gamma校正
-    {0xE0, (uint8_t []){0x0F, 0x31, 0x2B, 0x0C, 0x0E, 0x08, 0x4E, 0xF1, 0x37, 0x07, 0x10, 0x03, 0x0E, 0x09, 0x00}, 15, 0},
+    {0xE0, {0x0F, 0x31, 0x2B, 0x0C, 0x0E, 0x08, 0x4E, 0xF1, 0x37, 0x07, 0x10, 0x03, 0x0E, 0x09, 0x00}, 15, 0},
     // 负极性Gamma校正
-    {0xE1, (uint8_t []){0x00, 0x0E, 0x14, 0x03, 0x11, 0x07, 0x31, 0xC1, 0x48, 0x08, 0x0F, 0x0C, 0x31, 0x36, 0x0F}, 15, 0},
+    {0xE1, {0x00, 0x0E, 0x14, 0x03, 0x11, 0x07, 0x31, 0xC1, 0x48, 0x08, 0x0F, 0x0C, 0x31, 0x36, 0x0F}, 15, 0},
     // 退出睡眠模式
-    {0x11, (uint8_t []){0x00}, 0, 120},
+    {0x11, {0x00}, 0, 120},
     // 开启显示
-    {0x29, (uint8_t []){0x00}, 0, 100},
+    {0x29, {0x00}, 0, 100},
 };
-
-static SemaphoreHandle_t refresh_finish = NULL;
 
 // 发送自定义初始化命令
 static void send_init_commands(esp_lcd_panel_io_handle_t io_handle)
@@ -82,7 +88,7 @@ static void send_init_commands(esp_lcd_panel_io_handle_t io_handle)
         ESP_LOGI(TAG, "Sending command 0x%02X with %d bytes data", cmd->cmd, cmd->data_bytes);
         
         if (cmd->data_bytes > 0) {
-            esp_lcd_panel_io_tx_param(io_handle, cmd->cmd, cmd->data, cmd->data_bytes);
+            esp_lcd_panel_io_tx_param(io_handle, cmd->cmd, (void*)cmd->data, cmd->data_bytes);
         } else {
             esp_lcd_panel_io_tx_param(io_handle, cmd->cmd, NULL, 0);
         }
