@@ -15,8 +15,8 @@ static const char *TAG = "lcd";
 #define TEST_READ_PERIOD_MS             (30)
 
 /* SPI Configuration */
-#define TEST_LCD_SPI_H_RES              (320)
-#define TEST_LCD_SPI_V_RES              (480)
+#define TEST_LCD_SPI_H_RES              (480)
+#define TEST_LCD_SPI_V_RES              (320)
 #define TEST_LCD_SPI_HOST               (SPI2_HOST)
 #define TEST_PIN_NUM_SPI_CS             (GPIO_NUM_5)
 #define TEST_PIN_NUM_SPI_PCLK           (GPIO_NUM_6)
